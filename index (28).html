@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard iBangga Banjarmasin 2026</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #f4f6f8;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    #loader {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background: #f4f6f8;
+      z-index: 10;
+      transition: opacity 0.3s ease;
+    }
+    #loader .spinner {
+      width: 36px;
+      height: 36px;
+      border: 4px solid #d1d5db;
+      border-top-color: #22c55e;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 14px;
+    }
+    #loader p { color: #6b7280; font-size: 13.5px; margin: 0; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    iframe {
+      width: 100%;
+      height: 100vh;
+      border: none;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loader">
+    <div class="spinner"></div>
+    <p>Memuat dashboard...</p>
+  </div>
+
+  <iframe
+    id="dashboardFrame"
+    src="https://script.google.com/macros/s/AKfycbyU9eDl5NnGxiamE_GW-qo12WVaM_hd6xcIbQd3LQvuaH5wWCt7F56TZKt851ioB92HPA/exec"
+    allowfullscreen
+    onload="document.getElementById('loader').style.display='none';">
+  </iframe>
+
+</body>
+</html>
