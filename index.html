@@ -1,286 +1,83 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#ffffff">
+  <title>Dashboard iBangga</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            height: 100vh;
-            background-color: #f0f2f5;
-        }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #fff;
+      /* Cegah bounce scroll di iOS */
+      overscroll-behavior: none;
+      -webkit-overflow-scrolling: touch;
+    }
 
-        /* Sidebar */
-        .sidebar {
-            width: 250px;
-            background: linear-gradient(180deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-        }
+    /* Kunci body agar tidak bisa di-scroll */
+    body {
+      position: fixed;
+      inset: 0;
+    }
 
-        .sidebar-header {
-            padding: 25px 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            text-align: center;
-        }
+    iframe {
+      /* Fallback untuk browser lama */
+      height: 100vh;
+      width: 100%;
 
-        .sidebar-header h2 {
-            font-size: 22px;
-            font-weight: 600;
-        }
+      /* Modern: dynamic viewport (mengatasi address bar mobile) */
+      height: 100dvh;
+      width: 100dvw;
 
-        .sidebar-header p {
-            font-size: 12px;
-            opacity: 0.7;
-            margin-top: 5px;
-        }
+      /* Posisi fixed agar tetap full saat rotate */
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
 
-        .menu-container {
-            flex: 1;
-            padding: 20px 0;
-            overflow-y: auto;
-        }
+      border: none;
+      display: block;
 
-        .menu-label {
-            padding: 10px 25px 5px;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.5;
-        }
+      /* Aman untuk notch/home indicator */
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
 
-        .menu-item {
-            padding: 14px 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-left: 4px solid transparent;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 15px;
-        }
-
-        .menu-item:hover {
-            background-color: rgba(255,255,255,0.1);
-            border-left-color: #4fc3f7;
-        }
-
-        .menu-item.active {
-            background-color: rgba(255,255,255,0.15);
-            border-left-color: #4fc3f7;
-            font-weight: 600;
-        }
-
-        .menu-icon {
-            font-size: 18px;
-            width: 24px;
-            text-align: center;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .topbar {
-            background-color: white;
-            padding: 15px 30px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .topbar h1 {
-            color: #1e3c72;
-            font-size: 20px;
-            font-weight: 600;
-        }
-
-        .topbar-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-size: 14px;
-            color: #666;
-        }
-
-        .badge {
-            background-color: #4fc3f7;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-        }
-
-        .content-wrapper {
-            flex: 1;
-            padding: 20px;
-            overflow: hidden;
-        }
-
-        .iframe-container {
-            width: 100%;
-            height: 100%;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-            overflow: hidden;
-            position: relative;
-        }
-
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
-
-        .loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            color: #999;
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #1e3c72;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 60px;
-            }
-            .sidebar-header h2,
-            .sidebar-header p,
-            .menu-label,
-            .menu-item span:not(.menu-icon) {
-                display: none;
-            }
-            .menu-item {
-                justify-content: center;
-                padding: 15px 10px;
-            }
-            .menu-icon {
-                margin: 0;
-            }
-        }
-    </style>
+    /* Saat landscape di HP, pastikan tidak ada overflow */
+    @media screen and (orientation: landscape) and (max-height: 500px) {
+      iframe {
+        height: 100dvh;
+        width: 100dvw;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <h2>📊 MyApp</h2>
-            <p>Management System</p>
-        </div>
-        <div class="menu-container">
-            <div class="menu-label">Menu Utama</div>
-            <div class="menu-item active" data-page="dashboard" data-title="Dashboard">
-                <span class="menu-icon">🏠</span>
-                <span>Dashboard</span>
-            </div>
-            <div class="menu-item" data-page="laporan" data-title="Laporan">
-                <span class="menu-icon">📄</span>
-                <span>Laporan</span>
-            </div>
-            <div class="menu-item" data-page="data" data-title="Data">
-                <span class="menu-icon">📋</span>
-                <span>Data</span>
-            </div>
-            
-            <div class="menu-label">Pengaturan</div>
-            <div class="menu-item" data-page="pengaturan" data-title="Pengaturan">
-                <span class="menu-icon">⚙️</span>
-                <span>Pengaturan</span>
-            </div>
-            <div class="menu-item" data-page="profil" data-title="Profil">
-                <span class="menu-icon">👤</span>
-                <span>Profil</span>
-            </div>
-        </div>
-    </aside>
+  <iframe
+    src="https://script.google.com/macros/s/AKfycbyU9eDl5NnGxiamE_GW-qo12WVaM_hd6xcIbQd3LQvuaH5wWCt7F56TZKt851ioB92HPA/exec?page=dashboard"
+    allow="fullscreen; accelerometer; gyroscope; autoplay"
+    allowfullscreen
+    scrolling="auto">
+  </iframe>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="topbar">
-            <h1 id="pageTitle">Dashboard</h1>
-            <div class="topbar-info">
-                <span class="badge">v1.0</span>
-                <span id="currentDate"></span>
-            </div>
-        </div>
-        <div class="content-wrapper">
-            <div class="iframe-container">
-                <div class="loading" id="loading">
-                    <div class="spinner"></div>
-                    <p>Memuat dashboard...</p>
-                </div>
-                <iframe 
-                    id="dashboardFrame" 
-                    src="https://script.google.com/macros/s/AKfycbyU9eDl5NnGxiamE_GW-qo12WVaM_hd6xcIbQd3LQvuaH5wWCt7F56TZKt851ioB92HPA/exec?page=dashboard"
-                    onload="document.getElementById('loading').style.display='none'">
-                </iframe>
-            </div>
-        </div>
-    </main>
-
-    <script>
-        // Base URL Apps Script
-        const BASE_URL = 'https://script.google.com/macros/s/AKfycbyU9eDl5NnGxiamE_GW-qo12WVaM_hd6xcIbQd3LQvuaH5wWCt7F56TZKt851ioB92HPA/exec';
-
-        // Set tanggal hari ini
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById('currentDate').textContent = 
-            new Date().toLocaleDateString('id-ID', options);
-
-        // Menu click handler
-        document.querySelectorAll('.menu-item').forEach(item => {
-            item.addEventListener('click', function() {
-                const page = this.getAttribute('data-page');
-                const title = this.getAttribute('data-title');
-                
-                // Update active state
-                document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
-                this.classList.add('active');
-                
-                // Update title
-                document.getElementById('pageTitle').textContent = title;
-                
-                // Show loading
-                document.getElementById('loading').style.display = 'block';
-                
-                // Change iframe src
-                document.getElementById('dashboardFrame').src = `${BASE_URL}?page=${page}`;
-            });
-        });
-    </script>
+  <script>
+    // Fix 100vh di iOS Safari saat rotate / address bar berubah
+    function setViewportHeight() {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', vh + 'px');
+    }
+    setViewportHeight();
+    window.addEventListener('resize', setViewportHeight);
+    window.addEventListener('orientationchange', function () {
+      setTimeout(setViewportHeight, 200);
+    });
+  </script>
 </body>
 </html>
