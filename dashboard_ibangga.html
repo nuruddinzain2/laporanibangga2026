@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Dashboard iBangga &middot; Banjarmasin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* ===== Tema keluarga: hangat, seperti kayu rumah & kain tenun ===== */
+    --wood-900:#2B1E15;      /* sidebar - kayu tua */
+    --wood-800:#3A281B;
+    --wood-line:rgba(255,246,232,0.09);
+    --wood-ink:#E7D9C7;
+    --wood-ink-mute:#A88F76;
+    --wood-active:#4A3324;
+
+    --paper:#FBF6EC;         /* kertas hangat, bukan putih dingin */
+    --card:#FFFEFB;
+    --line:rgba(43,30,21,0.11);
+    --line-strong:rgba(43,30,21,0.20);
+    --ink:#2B2116;
+    --ink-soft:#6C5C4C;
+    --ink-mute:#9C8B79;
+
+    /* tiga dimensi iBangga */
+    --ket-mid:#B9841A; --ket-tint:#FBF0DA; --ket-ink:#7A5410;   /* ketentraman - keemasan, ibadah/tradisi */
+    --kem-mid:#4E7C4F; --kem-tint:#E7F1E3; --kem-ink:#345234;   /* kemandirian - hijau tumbuh */
+    --keb-mid:#C15B5E; --keb-tint:#FBEAE8; --keb-ink:#8A3639;   /* kebahagiaan - merah jambu hangat */
+    --ova-mid:#8C4A2F; --ova-tint:#F5E7DD; --ova-ink:#5E3018;   /* iBangga gabungan - kayu terakota */
+
+    /* tingkatan klasifikasi resmi */
+    --tier-rentan:#B0452E;    --tier-rentan-tint:#FBE7E1;
+    --tier-berkembang:#C08829; --tier-berkembang-tint:#FBF1DC;
+    --tier-tangguh:#3F7D4F;   --tier-tangguh-tint:#E7F3E9;
+
+    --serif:'Fraunces', Georgia, serif;
+    --sans:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    --pal-1:#B9841A; --pal-2:#4E7C4F; --pal-3:#C15B5E; --pal-4:#6B7FA3; --pal-5:#8C4A2F; --pal-6:#9C8B79;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;height:100%;}
+  body{display:flex;min-height:100vh;background-image:radial-gradient(circle at 100% 0%, rgba(140,74,47,0.05), transparent 55%);}
+
+  /* ===== Sidebar: seperti panel kayu ===== */
+  .sidebar{width:258px;flex:0 0 258px;background:var(--wood-900);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;}
+  .brand{padding:26px 22px 20px;border-bottom:1px solid var(--wood-line);display:flex;align-items:center;gap:11px;}
+  .brand-mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(155deg,var(--ova-mid),#B9841A);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .brand-mark svg{width:18px;height:18px;}
+  .brand-eyebrow{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--wood-ink-mute);font-weight:600;margin:0 0 3px;}
+  .brand-title{font-family:var(--serif);font-weight:700;font-size:17px;line-height:1.2;color:#FBF6EC;margin:0;}
+
+  .nav{flex:1;padding:16px 12px;display:flex;flex-direction:column;gap:2px;}
+  .nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:9px;color:var(--wood-ink);font-size:13.5px;font-weight:500;cursor:pointer;border:1px solid transparent;transition:background .15s ease,color .15s ease;user-select:none;}
+  .nav-item .ic{width:17px;text-align:center;font-size:14px;opacity:.85;flex:0 0 auto;}
+  .nav-item.disabled{color:var(--wood-ink-mute);cursor:not-allowed;}
+  .nav-item:not(.active):not(.disabled):hover{background:rgba(255,246,232,0.06);color:#fff;}
+  .nav-item.active{background:var(--wood-active);color:#fff;border-color:var(--wood-line);}
+  .nav-item.active .ic{opacity:1;}
+
+  .sidebar-foot{padding:16px 22px 22px;border-top:1px solid var(--wood-line);}
+  .sidebar-foot p{margin:0;font-size:11px;color:var(--wood-ink-mute);line-height:1.6;}
+
+  /* ===== Main ===== */
+  .main{flex:1;min-width:0;padding:30px 34px 60px;}
+  .topbar{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:6px;}
+  .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ova-mid);font-weight:700;margin:0 0 6px;}
+
+  /* HIRARKI HURUF: H1 = paling besar di halaman */
+  h1{font-family:var(--serif);font-weight:700;font-size:clamp(30px,3.6vw,40px);margin:0;color:var(--ink);letter-spacing:-.01em;line-height:1.05;}
+  .sub{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0;max-width:56ch;}
+
+  .select-wrap{position:relative;}
+  select{appearance:none;-webkit-appearance:none;font-family:var(--sans);font-size:13.5px;font-weight:600;color:var(--ink);background:var(--card);border:1px solid var(--line-strong);border-radius:10px;padding:10px 36px 10px 15px;cursor:pointer;min-width:220px;}
+  .select-wrap::after{content:"";position:absolute;right:14px;top:50%;transform:translateY(-65%) rotate(45deg);width:7px;height:7px;border-right:1.6px solid var(--ink-soft);border-bottom:1.6px solid var(--ink-soft);pointer-events:none;}
+
+  /* ===== Lencana tingkatan (signature element) ===== */
+  .tier-banner{display:flex;align-items:center;gap:18px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:22px 0;}
+  .tier-seal{flex:0 0 auto;width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;border:2.5px dashed currentColor;}
+  .tier-seal .ring{position:absolute;inset:6px;border-radius:50%;background:currentColor;opacity:.12;}
+  .tier-seal .pct{position:relative;font-family:var(--serif);font-weight:700;font-size:16.5px;}
+  .tier-info{flex:1;min-width:0;}
+  .tier-label{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--ink-mute);margin:0 0 4px;}
+  .tier-name{font-family:var(--serif);font-weight:700;font-size:22px;margin:0 0 5px;}
+  .tier-desc{font-size:12.5px;color:var(--ink-soft);margin:0;line-height:1.55;max-width:62ch;}
+  .tier-scale{flex:0 0 auto;display:flex;flex-direction:column;gap:4px;align-items:flex-end;}
+  .tier-scale .bar{width:130px;height:8px;border-radius:99px;background:linear-gradient(90deg,var(--tier-rentan) 0 40%,var(--tier-berkembang) 40% 70%,var(--tier-tangguh) 70% 100%);position:relative;}
+  .tier-scale .marker{position:absolute;top:-3px;width:3px;height:14px;border-radius:2px;background:var(--ink);transform:translateX(-50%);}
+  .tier-scale .caption{font-size:10px;color:var(--ink-mute);}
+
+  /* ===== kartu statistik ===== */
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:8px;}
+  @media (max-width:940px){.stat-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:520px){.stat-grid{grid-template-columns:1fr;}}
+  .stat-card{background:var(--card);border-radius:14px;border:1px solid var(--line);border-top:3px solid var(--bar,var(--ova-mid));padding:19px 19px 17px;}
+  .stat-num{font-family:var(--serif);font-weight:700;font-size:29px;line-height:1;margin:0 0 8px;color:var(--ink);font-variant-numeric:tabular-nums;}
+  .stat-num .unit{font-size:14px;font-weight:500;color:var(--ink-mute);margin-left:2px;}
+  .stat-label{font-size:12px;color:var(--ink-soft);margin:0;font-weight:600;display:flex;align-items:center;gap:6px;}
+  .dot{width:7px;height:7px;border-radius:50%;display:inline-block;background:var(--bar,var(--ova-mid));}
+  .track{height:5px;border-radius:99px;background:var(--paper);overflow:hidden;margin-top:10px;}
+  .fill{height:100%;border-radius:99px;background:var(--bar,var(--ova-mid));}
+
+  .meta-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:24px 0 22px;padding:13px 18px;background:var(--card);border-radius:12px;border:1px solid var(--line);}
+  .meta-item{font-size:12.5px;color:var(--ink-soft);}
+  .meta-item b{color:var(--ink);font-weight:700;}
+  .data-note{font-size:11px;color:var(--ink-mute);width:100%;padding-top:8px;margin-top:2px;border-top:1px dashed var(--line);}
+
+  .section{margin-bottom:32px;}
+  .section-head{display:flex;align-items:baseline;gap:10px;margin-bottom:13px;}
+  .section-head h2{font-family:var(--serif);font-weight:700;font-size:19px;margin:0;color:var(--ink);}
+  .section-score{font-size:12.5px;font-weight:700;padding:3px 11px;border-radius:999px;}
+  .section-score.ket{background:var(--ket-tint);color:var(--ket-ink);}
+  .section-score.kem{background:var(--kem-tint);color:var(--kem-ink);}
+  .section-score.keb{background:var(--keb-tint);color:var(--keb-ink);}
+
+  .var-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(152px,1fr));gap:10px;}
+  .var-card{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:12px 13px 11px;}
+  .var-name{font-size:11.5px;color:var(--ink-soft);margin:0 0 8px;min-height:30px;line-height:1.3;font-weight:500;}
+  .var-num{font-family:var(--serif);font-size:18px;font-weight:700;margin:0 0 8px;color:var(--ink);font-variant-numeric:tabular-nums;}
+  .var-track{height:4px;border-radius:99px;background:var(--paper);overflow:hidden;}
+  .var-fill{height:100%;border-radius:99px;}
+  .var-fill.ket{background:var(--ket-mid);} .var-fill.kem{background:var(--kem-mid);} .var-fill.keb{background:var(--keb-mid);}
+
+  footer{margin-top:12px;font-size:11px;color:var(--ink-mute);}
+
+  @media (max-width:760px){
+    body{flex-direction:column;}
+    .sidebar{width:100%;flex:none;position:relative;height:auto;}
+    .nav{flex-direction:row;overflow-x:auto;padding:10px 12px;}
+    .nav-item{white-space:nowrap;}
+    .sidebar-foot{display:none;}
+    .main{padding:22px 16px 48px;}
+    .tier-banner{flex-wrap:wrap;}
+    .tier-scale{align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 11.5 12 4l8 7.5" stroke="#FBF6EC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M6 10.5V20h12v-9.5" stroke="#FBF6EC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M10 20v-5h4v5" stroke="#FBF6EC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div>
+        <p class="brand-eyebrow">Dashboard</p>
+        <p class="brand-title">iBangga Banjarmasin</p>
+      </div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="sidebar-foot">
+      <p>Dihitung langsung dari sheet dasar &ldquo;Hitung iBangga per KK&rdquo; (1.892 KK terdata). Skor = rata-rata jawaban yang terisi; sel kosong diabaikan, bukan dianggap nol.</p>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <p class="eyebrow">Rekap iBangga &middot; Kota Banjarmasin</p>
+        <h1>Indeks iBangga</h1>
+        <p class="sub">Pilih kecamatan untuk melihat rincian, atau lihat gabungan seluruh kecamatan.</p>
+      </div>
+      <div class="select-wrap">
+        <select id="kecSelect"></select>
+      </div>
+    </div>
+
+    <div class="tier-banner" id="tierBanner"></div>
+
+    <div class="stat-grid" id="statGrid"></div>
+
+    <div class="meta-row" id="metaRow"></div>
+
+    <div id="sections"></div>
+
+    <footer>Skor dihitung otomatis dari data yang sudah masuk &mdash; akan berubah seiring pendataan KK bertambah.</footer>
+  </main>
+
+<script>
+/* ============ SUMBER DATA ============
+   Dihitung langsung dari file "Hitung iBangga per KK" (1.892 baris KK, sumber kebenaran).
+   Setiap skor = rata-rata jawaban yang TERISI saja (blank diabaikan), sama seperti kolom
+   Skor_Ketentraman / Skor_Kemandirian / Skor_Kebahagiaan / Skor_iBangga_KK di sheet dasar.
+   Ganti/tambah baris di sini saat sheet dasar diperbarui.
+*/
+const DATA = [
+  { kec:"Banjarmasin Barat", kk:348, ket:97.4713, kem:59.9774, keb:56.7529, ibangga:71.4005,
+    v:{ ibadah:97.7011, legalitasNikah:95.3488, legalitasAkta:95.7143, tidakCerai:91.2, jaminanKes:85.9375, keharmonisan:100.0, penghasilan:31.6092, makanBeragam:22.1264, rumahLayak:55.4598, simpanan:58.6806, pendidikan:81.5385, kesehatanKel:95.4023, aksesInfo:96.131, interaksiKel:30.0, interaksiPeng:95.8824, interaksiRek:53.1609, interaksiSos:53.1609 } },
+  { kec:"Banjarmasin Selatan", kk:370, ket:95.8378, kem:56.491, keb:63.3108, ibangga:71.8799,
+    v:{ ibadah:94.5946, legalitasNikah:92.0, legalitasAkta:100.0, tidakCerai:85.0467, jaminanKes:69.0265, keharmonisan:100.0, penghasilan:25.9459, makanBeragam:19.7297, rumahLayak:45.1351, simpanan:58.4746, pendidikan:91.2281, kesehatanKel:93.2432, aksesInfo:98.0057, interaksiKel:26.0, interaksiPeng:92.1569, interaksiRek:59.7297, interaksiSos:59.7297 } },
+  { kec:"Banjarmasin Tengah", kk:408, ket:95.866, kem:57.6862, keb:63.5212, ibangga:72.3578,
+    v:{ ibadah:97.7941, legalitasNikah:96.0265, legalitasAkta:96.5217, tidakCerai:82.199, jaminanKes:84.6154, keharmonisan:97.9487, penghasilan:43.8725, makanBeragam:24.5098, rumahLayak:46.8137, simpanan:39.0029, pendidikan:84.9057, kesehatanKel:90.4412, aksesInfo:95.6522, interaksiKel:23.4043, interaksiPeng:97.6526, interaksiRek:62.7451, interaksiSos:62.7451 } },
+  { kec:"Banjarmasin Timur", kk:362, ket:97.965, kem:58.1636, keb:66.3444, ibangga:74.1577,
+    v:{ ibadah:99.1713, legalitasNikah:98.6842, legalitasAkta:100.0, tidakCerai:94.9495, jaminanKes:75.4902, keharmonisan:98.0392, penghasilan:25.4144, makanBeragam:24.0331, rumahLayak:46.1326, simpanan:65.5882, pendidikan:88.3721, kesehatanKel:90.3315, aksesInfo:97.9827, interaksiKel:21.875, interaksiPeng:91.0377, interaksiRek:65.4696, interaksiSos:65.4696 } },
+  { kec:"Banjarmasin Utara", kk:404, ket:96.4728, kem:58.0764, keb:68.4406, ibangga:74.3299,
+    v:{ ibadah:96.2871, legalitasNikah:96.5217, legalitasAkta:97.3684, tidakCerai:89.375, jaminanKes:82.4561, keharmonisan:99.4152, penghasilan:31.1881, makanBeragam:21.0396, rumahLayak:44.0594, simpanan:67.7749, pendidikan:84.7222, kesehatanKel:90.5941, aksesInfo:93.7662, interaksiKel:18.3673, interaksiPeng:91.3793, interaksiRek:71.5347, interaksiSos:71.5347 } }
+];
+
+const VAR_GROUPS = {
+  ket:{ label:"Ketentraman", cls:"ket",
+    vars:[
+      {k:"ibadah", label:"Ibadah"}, {k:"legalitasNikah", label:"Legalitas nikah"},
+      {k:"legalitasAkta", label:"Legalitas akta anak"}, {k:"tidakCerai", label:"Tidak cerai hidup"},
+      {k:"jaminanKes", label:"Jaminan kesehatan"}, {k:"keharmonisan", label:"Keharmonisan"},
+    ]},
+  kem:{ label:"Kemandirian", cls:"kem",
+    vars:[
+      {k:"penghasilan", label:"Penghasilan"}, {k:"makanBeragam", label:"Makan beragam"},
+      {k:"rumahLayak", label:"Rumah layak huni"}, {k:"simpanan", label:"Simpanan"},
+      {k:"pendidikan", label:"Pendidikan"}, {k:"kesehatanKel", label:"Kesehatan keluarga"},
+      {k:"aksesInfo", label:"Akses informasi"},
+    ]},
+  keb:{ label:"Kebahagiaan", cls:"keb",
+    vars:[
+      {k:"interaksiKel", label:"Interaksi keluarga"}, {k:"interaksiPeng", label:"Interaksi pengasuhan anak"},
+      {k:"interaksiRek", label:"Interaksi rekreasi"}, {k:"interaksiSos", label:"Interaksi sosial"},
+    ]}
+};
+
+const NAV_ITEMS = [
+  {ic:"&#9635;", label:"Metadata", disabled:true},
+  {ic:"&#127482;", label:"Karakteristik Keluarga", disabled:true},
+  {ic:"&#128100;", label:"Karakteristik Individu", disabled:true},
+  {ic:"&#127968;", label:"Data Keluarga", disabled:true},
+  {ic:"&#128100;", label:"Data Individu", disabled:true},
+  {ic:"&#128202;", label:"Indeks iBangga", disabled:false, active:true},
+];
+
+/* ===== Klasifikasi resmi iBangga (BKKBN, Perban No.3/2022) =====
+   <40  : Rentan     (kurang baik)
+   40-70: Berkembang (cukup baik)
+   >70  : Tangguh    (baik)              */
+function klasifikasiTingkat(skor){
+  if (skor < 40) return { key:"rentan", nama:"Rentan", desc:"Status pembangunan keluarga kurang baik &mdash; skor iBangga di bawah 40.", color:"var(--tier-rentan)", tint:"var(--tier-rentan-tint)" };
+  if (skor <= 70) return { key:"berkembang", nama:"Berkembang", desc:"Status pembangunan keluarga cukup baik &mdash; skor iBangga antara 40 dan 70.", color:"var(--tier-berkembang)", tint:"var(--tier-berkembang-tint)" };
+  return { key:"tangguh", nama:"Tangguh", desc:"Status pembangunan keluarga baik &mdash; skor iBangga di atas 70.", color:"var(--tier-tangguh)", tint:"var(--tier-tangguh-tint)" };
+}
+
+function fmt(n){ return n.toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+function aggregateAll(){
+  const totalKK = DATA.reduce((s,d)=>s+d.kk,0);
+  const wavg = (getter) => DATA.reduce((s,d)=>s+getter(d)*d.kk,0)/totalKK;
+  const v = {};
+  Object.values(VAR_GROUPS).forEach(g=>g.vars.forEach(({k})=>{ v[k] = wavg(d=>d.v[k]); }));
+  return { kec:"Seluruh kecamatan", kk:totalKK, ket:wavg(d=>d.ket), kem:wavg(d=>d.kem), keb:wavg(d=>d.keb), ibangga:wavg(d=>d.ibangga), v };
+}
+
+const ALL = aggregateAll();
+let current = "__ALL__";
+
+function getRecord(){ return current==="__ALL__" ? ALL : DATA.find(d=>d.kec===current); }
+
+function renderNav(){
+  document.getElementById('nav').innerHTML = NAV_ITEMS.map(it=>`
+    <div class="nav-item ${it.active?'active':''} ${it.disabled?'disabled':''}" ${it.disabled?'title="Belum tersedia"':''}>
+      <span class="ic">${it.ic}</span>${it.label}
+    </div>`).join('');
+}
+
+function renderSelect(){
+  const el = document.getElementById('kecSelect');
+  const items = [{k:"__ALL__", label:"Semua Kecamatan"}, ...DATA.map(d=>({k:d.kec, label:d.kec}))];
+  el.innerHTML = items.map(it=>`<option value="${it.k}" ${current===it.k?'selected':''}>${it.label}</option>`).join('');
+  el.onchange = (e)=>{ current = e.target.value; renderAll(); };
+}
+
+function renderTier(rec){
+  const t = klasifikasiTingkat(rec.ibangga);
+  document.getElementById('tierBanner').innerHTML = `
+    <div class="tier-seal" style="color:${t.color}">
+      <span class="ring"></span>
+      <span class="pct" style="color:${t.color}">${fmt(rec.ibangga)}</span>
+    </div>
+    <div class="tier-info">
+      <p class="tier-label">Tingkatan pembangunan keluarga &middot; ${rec.kec}</p>
+      <p class="tier-name" style="color:${t.color}">${t.nama}</p>
+      <p class="tier-desc">${t.desc}</p>
+    </div>
+    <div class="tier-scale">
+      <div class="bar"><div class="marker" style="left:${Math.min(Math.max(rec.ibangga,0),100)}%"></div></div>
+      <span class="caption">0 &middot; Rentan &lt;40 &middot; Berkembang 40&ndash;70 &middot; Tangguh &gt;70 &middot; 100</span>
+    </div>
+  `;
+}
+
+function renderStats(rec){
+  const cards = [
+    {bar:"var(--ket-mid)", label:"Ketentraman", val:rec.ket},
+    {bar:"var(--kem-mid)", label:"Kemandirian", val:rec.kem},
+    {bar:"var(--keb-mid)", label:"Kebahagiaan", val:rec.keb},
+    {bar:"var(--ova-mid)", label:"iBangga (gabungan)", val:rec.ibangga},
+  ];
+  document.getElementById('statGrid').innerHTML = cards.map(c=>`
+    <div class="stat-card" style="--bar:${c.bar}">
+      <p class="stat-num">${fmt(c.val)}<span class="unit">/ 100</span></p>
+      <p class="stat-label"><span class="dot"></span>${c.label}</p>
+      <div class="track"><div class="fill" style="width:${Math.min(c.val,100)}%"></div></div>
+    </div>`).join('');
+}
+
+function renderMeta(rec){
+  document.getElementById('metaRow').innerHTML = `
+    <span class="meta-item">Kecamatan &middot; <b>${rec.kec}</b></span>
+    <span class="meta-item">Jumlah KK terdata &middot; <b>${rec.kk.toLocaleString('id-ID')}</b></span>
+    <div class="data-note">Skor dihitung dari data KK yang sudah tercatat sejauh ini${current==="__ALL__" ? " &mdash; ini rata-rata tertimbang jumlah KK seluruh kecamatan" : ""}; akan diperbarui otomatis saat entri data bertambah.</div>
+  `;
+}
+
+function renderSections(rec){
+  document.getElementById('sections').innerHTML = Object.entries(VAR_GROUPS).map(([key,g])=>{
+    const cards = g.vars.map(({k,label})=>{
+      const val = rec.v[k];
+      return `<div class="var-card">
+          <p class="var-name">${label}</p>
+          <p class="var-num">${fmt(val)}</p>
+          <div class="var-track"><div class="var-fill ${g.cls}" style="width:${Math.min(val,100)}%"></div></div>
+        </div>`;
+    }).join('');
+    return `<div class="section">
+        <div class="section-head"><h2>${g.label}</h2><span class="section-score ${g.cls}">${fmt(rec[key])}</span></div>
+        <div class="var-grid">${cards}</div>
+      </div>`;
+  }).join('');
+}
+
+function renderAll(){
+  const rec = getRecord();
+  renderSelect();
+  renderTier(rec);
+  renderStats(rec);
+  renderMeta(rec);
+  renderSections(rec);
+}
+
+renderNav();
+renderAll();
+</script>
+</body>
+</html>
