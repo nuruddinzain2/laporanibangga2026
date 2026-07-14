@@ -126,6 +126,65 @@
 
   footer{margin-top:12px;font-size:11px;color:var(--ink-mute);}
 
+  /* ===== state: loading / error / kosong ===== */
+  .state-box{background:var(--card);border:1px dashed var(--line-strong);border-radius:14px;padding:30px 24px;text-align:center;color:var(--ink-soft);font-size:13px;margin:18px 0;}
+  .state-box.err{border-color:var(--tier-rentan);color:var(--tier-rentan);background:var(--tier-rentan-tint);}
+
+  /* ===== ringkasan total (chip di atas grid slide) ===== */
+  .summary-row{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0 4px;}
+  .chip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 15px;font-size:12px;color:var(--ink-soft);}
+  .chip b{color:var(--ink);}
+
+  /* ===== grid kartu slide (donut / bar) ===== */
+  .slide-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:18px 0 28px;}
+  .slide-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:19px 20px;}
+  .slide-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:14px;}
+  .slide-title{font-family:var(--serif);font-weight:700;font-size:15.5px;color:var(--ink);margin:0;}
+  .slide-n{font-size:11px;color:var(--ink-mute);white-space:nowrap;}
+
+  .slide-body{display:flex;gap:16px;align-items:center;}
+  .donut-ring{flex:0 0 auto;width:96px;height:96px;border-radius:50%;position:relative;}
+  .donut-hole{position:absolute;inset:15px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;flex-direction:column;}
+  .donut-hole .n{font-family:var(--serif);font-weight:700;font-size:16px;color:var(--ink);line-height:1;}
+  .donut-hole .lbl{font-size:8.5px;color:var(--ink-mute);margin-top:2px;text-transform:uppercase;letter-spacing:.04em;}
+
+  .legend{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;}
+  .legend-item{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--ink-soft);}
+  .legend-item .dotc{width:8px;height:8px;border-radius:50%;flex:0 0 auto;}
+  .legend-item .lbl{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .legend-item .pct{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;}
+  .legend-item.anomali{cursor:pointer;color:var(--tier-rentan);text-decoration:underline dotted;}
+  .legend-item.anomali:hover{color:var(--keb-ink);}
+
+  .bar-list{display:flex;flex-direction:column;gap:9px;width:100%;}
+  .bar-row .bar-top{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-soft);margin-bottom:4px;}
+  .bar-row .bar-top b{color:var(--ink);font-variant-numeric:tabular-nums;}
+  .bar-track{height:7px;border-radius:99px;background:var(--paper);overflow:hidden;}
+  .bar-fill{height:100%;border-radius:99px;background:var(--ova-mid);}
+  .bar-row.anomali .bar-top{cursor:pointer;color:var(--tier-rentan);}
+  .bar-row.anomali .bar-fill{background:var(--tier-rentan);}
+
+  .avg-note{font-size:11px;color:var(--ink-mute);margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);}
+
+  /* ===== tabel RT ===== */
+  .rt-table-wrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px;margin:8px 0 28px;}
+  table.rt-table{border-collapse:collapse;width:100%;font-size:11.5px;}
+  table.rt-table th,table.rt-table td{padding:7px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap;}
+  table.rt-table th{color:var(--ink-mute);font-weight:600;text-transform:uppercase;font-size:9.5px;letter-spacing:.03em;position:sticky;top:0;background:var(--card);}
+  table.rt-table td:first-child,table.rt-table th:first-child{text-align:left;position:sticky;left:0;background:var(--card);font-weight:600;color:var(--ink);}
+  table.rt-table td.total{font-weight:700;color:var(--ova-mid);}
+
+  /* ===== modal identitas anomali ===== */
+  .modal-overlay{position:fixed;inset:0;background:rgba(43,30,21,0.45);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;}
+  .modal-overlay.open{display:flex;}
+  .modal-box{background:var(--paper);border-radius:16px;max-width:640px;width:100%;max-height:80vh;overflow:auto;padding:22px 24px;}
+  .modal-box h3{font-family:var(--serif);margin:0 0 4px;font-size:18px;color:var(--ink);}
+  .modal-box .modal-sub{font-size:12px;color:var(--ink-soft);margin:0 0 14px;}
+  .modal-close{float:right;border:none;background:var(--card);border:1px solid var(--line);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;color:var(--ink-soft);}
+  table.modal-table{width:100%;border-collapse:collapse;font-size:12px;}
+  table.modal-table th,table.modal-table td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left;}
+  table.modal-table th{color:var(--ink-mute);font-size:10px;text-transform:uppercase;}
+
   @media (max-width:760px){
     body{flex-direction:column;}
     .sidebar{width:100%;flex:none;position:relative;height:auto;}
@@ -163,116 +222,272 @@
   <main class="main">
     <div class="topbar">
       <div>
-        <p class="eyebrow">Rekap iBangga &middot; Kota Banjarmasin</p>
-        <h1>Indeks iBangga</h1>
-        <p class="sub">Pilih kecamatan untuk melihat rincian, atau lihat gabungan seluruh kecamatan.</p>
+        <p class="eyebrow" id="pageEyebrow">Rekap iBangga &middot; Kota Banjarmasin</p>
+        <h1 id="pageTitle">Indeks iBangga</h1>
+        <p class="sub" id="pageSub">Pilih kecamatan untuk melihat rincian, atau lihat gabungan seluruh kecamatan.</p>
       </div>
       <div class="select-wrap">
-        <select id="kecSelect"></select>
+        <select id="kecSelect"><option value="">Memuat kecamatan&hellip;</option></select>
       </div>
     </div>
 
-    <div class="tier-banner" id="tierBanner"></div>
+    <!-- ===== Tampilan khusus tab "Indeks iBangga" ===== -->
+    <div id="indeksView">
+      <div class="tier-banner" id="tierBanner"></div>
+      <div class="stat-grid" id="statGrid"></div>
+      <div class="meta-row" id="metaRow"></div>
+      <div id="sections"></div>
+    </div>
 
-    <div class="stat-grid" id="statGrid"></div>
-
-    <div class="meta-row" id="metaRow"></div>
-
-    <div id="sections"></div>
+    <!-- ===== Tampilan generik untuk 4 tab lain (grid slide donut/bar) ===== -->
+    <div id="genericView" style="display:none;">
+      <div class="summary-row" id="summaryRow"></div>
+      <div id="rtTableWrap"></div>
+      <div class="slide-grid" id="slideGrid"></div>
+    </div>
 
     <footer>Skor dihitung otomatis dari data yang sudah masuk &mdash; akan berubah seiring pendataan KK bertambah.</footer>
   </main>
 
-<script>
-/* ============ SUMBER DATA ============
-   Dihitung langsung dari file "Hitung iBangga per KK" (1.892 baris KK, sumber kebenaran).
-   Setiap skor = rata-rata jawaban yang TERISI saja (blank diabaikan), sama seperti kolom
-   Skor_Ketentraman / Skor_Kemandirian / Skor_Kebahagiaan / Skor_iBangga_KK di sheet dasar.
-   Ganti/tambah baris di sini saat sheet dasar diperbarui.
-*/
-const DATA = [
-  { kec:"Banjarmasin Barat", kk:348, ket:97.4713, kem:59.9774, keb:56.7529, ibangga:71.4005,
-    v:{ ibadah:97.7011, legalitasNikah:95.3488, legalitasAkta:95.7143, tidakCerai:91.2, jaminanKes:85.9375, keharmonisan:100.0, penghasilan:31.6092, makanBeragam:22.1264, rumahLayak:55.4598, simpanan:58.6806, pendidikan:81.5385, kesehatanKel:95.4023, aksesInfo:96.131, interaksiKel:30.0, interaksiPeng:95.8824, interaksiRek:53.1609, interaksiSos:53.1609 } },
-  { kec:"Banjarmasin Selatan", kk:370, ket:95.8378, kem:56.491, keb:63.3108, ibangga:71.8799,
-    v:{ ibadah:94.5946, legalitasNikah:92.0, legalitasAkta:100.0, tidakCerai:85.0467, jaminanKes:69.0265, keharmonisan:100.0, penghasilan:25.9459, makanBeragam:19.7297, rumahLayak:45.1351, simpanan:58.4746, pendidikan:91.2281, kesehatanKel:93.2432, aksesInfo:98.0057, interaksiKel:26.0, interaksiPeng:92.1569, interaksiRek:59.7297, interaksiSos:59.7297 } },
-  { kec:"Banjarmasin Tengah", kk:408, ket:95.866, kem:57.6862, keb:63.5212, ibangga:72.3578,
-    v:{ ibadah:97.7941, legalitasNikah:96.0265, legalitasAkta:96.5217, tidakCerai:82.199, jaminanKes:84.6154, keharmonisan:97.9487, penghasilan:43.8725, makanBeragam:24.5098, rumahLayak:46.8137, simpanan:39.0029, pendidikan:84.9057, kesehatanKel:90.4412, aksesInfo:95.6522, interaksiKel:23.4043, interaksiPeng:97.6526, interaksiRek:62.7451, interaksiSos:62.7451 } },
-  { kec:"Banjarmasin Timur", kk:362, ket:97.965, kem:58.1636, keb:66.3444, ibangga:74.1577,
-    v:{ ibadah:99.1713, legalitasNikah:98.6842, legalitasAkta:100.0, tidakCerai:94.9495, jaminanKes:75.4902, keharmonisan:98.0392, penghasilan:25.4144, makanBeragam:24.0331, rumahLayak:46.1326, simpanan:65.5882, pendidikan:88.3721, kesehatanKel:90.3315, aksesInfo:97.9827, interaksiKel:21.875, interaksiPeng:91.0377, interaksiRek:65.4696, interaksiSos:65.4696 } },
-  { kec:"Banjarmasin Utara", kk:404, ket:96.4728, kem:58.0764, keb:68.4406, ibangga:74.3299,
-    v:{ ibadah:96.2871, legalitasNikah:96.5217, legalitasAkta:97.3684, tidakCerai:89.375, jaminanKes:82.4561, keharmonisan:99.4152, penghasilan:31.1881, makanBeragam:21.0396, rumahLayak:44.0594, simpanan:67.7749, pendidikan:84.7222, kesehatanKel:90.5941, aksesInfo:93.7662, interaksiKel:18.3673, interaksiPeng:91.3793, interaksiRek:71.5347, interaksiSos:71.5347 } }
-];
+  <div class="modal-overlay" id="anomaliModal">
+    <div class="modal-box">
+      <button class="modal-close" id="anomaliModalClose">&times;</button>
+      <h3 id="anomaliModalTitle">Rincian Data</h3>
+      <p class="modal-sub" id="anomaliModalSub"></p>
+      <div id="anomaliModalBody"></div>
+    </div>
+  </div>
 
-const VAR_GROUPS = {
-  ket:{ label:"Ketentraman", cls:"ket",
-    vars:[
-      {k:"ibadah", label:"Ibadah"}, {k:"legalitasNikah", label:"Legalitas nikah"},
-      {k:"legalitasAkta", label:"Legalitas akta anak"}, {k:"tidakCerai", label:"Tidak cerai hidup"},
-      {k:"jaminanKes", label:"Jaminan kesehatan"}, {k:"keharmonisan", label:"Keharmonisan"},
-    ]},
-  kem:{ label:"Kemandirian", cls:"kem",
-    vars:[
-      {k:"penghasilan", label:"Penghasilan"}, {k:"makanBeragam", label:"Makan beragam"},
-      {k:"rumahLayak", label:"Rumah layak huni"}, {k:"simpanan", label:"Simpanan"},
-      {k:"pendidikan", label:"Pendidikan"}, {k:"kesehatanKel", label:"Kesehatan keluarga"},
-      {k:"aksesInfo", label:"Akses informasi"},
-    ]},
-  keb:{ label:"Kebahagiaan", cls:"keb",
-    vars:[
-      {k:"interaksiKel", label:"Interaksi keluarga"}, {k:"interaksiPeng", label:"Interaksi pengasuhan anak"},
-      {k:"interaksiRek", label:"Interaksi rekreasi"}, {k:"interaksiSos", label:"Interaksi sosial"},
-    ]}
-};
+<script>
+/* ============================================================
+   DASHBOARD IBANGGA — terhubung ke Code.gs lewat google.script.run
+   ============================================================
+   Satu filter Kecamatan di atas berlaku untuk semua tab (sesuai
+   komentar routing di Code.gs: "dashboard -> 5 menu ... filter
+   Kecamatan saja").
+   ============================================================ */
+
+const PALETTE = ['var(--pal-1)','var(--pal-2)','var(--pal-3)','var(--pal-4)','var(--pal-5)','var(--pal-6)'];
 
 const NAV_ITEMS = [
-  {ic:"&#9635;", label:"Metadata", disabled:true},
-  {ic:"&#127482;", label:"Karakteristik Keluarga", disabled:true},
-  {ic:"&#128100;", label:"Karakteristik Individu", disabled:true},
-  {ic:"&#127968;", label:"Data Keluarga", disabled:true},
-  {ic:"&#128100;", label:"Data Individu", disabled:true},
-  {ic:"&#128202;", label:"Indeks iBangga", disabled:false, active:true},
+  { id:'metadata',   ic:'&#9635;',   label:'Metadata', disabled:true },
+  { id:'karkel',     ic:'&#127482;', label:'Karakteristik Keluarga' },
+  { id:'karind',     ic:'&#128100;', label:'Karakteristik Individu' },
+  { id:'datakel',    ic:'&#127968;', label:'Data Keluarga' },
+  { id:'dataind',    ic:'&#128100;', label:'Data Individu' },
+  { id:'indeks',     ic:'&#128202;', label:'Indeks iBangga' }
 ];
 
-/* ===== Klasifikasi resmi iBangga (BKKBN, Perban No.3/2022) =====
-   <40  : Rentan     (kurang baik)
-   40-70: Berkembang (cukup baik)
-   >70  : Tangguh    (baik)              */
-function klasifikasiTingkat(skor){
-  if (skor < 40) return { key:"rentan", nama:"Rentan", desc:"Status pembangunan keluarga kurang baik &mdash; skor iBangga di bawah 40.", color:"var(--tier-rentan)", tint:"var(--tier-rentan-tint)" };
-  if (skor <= 70) return { key:"berkembang", nama:"Berkembang", desc:"Status pembangunan keluarga cukup baik &mdash; skor iBangga antara 40 dan 70.", color:"var(--tier-berkembang)", tint:"var(--tier-berkembang-tint)" };
-  return { key:"tangguh", nama:"Tangguh", desc:"Status pembangunan keluarga baik &mdash; skor iBangga di atas 70.", color:"var(--tier-tangguh)", tint:"var(--tier-tangguh-tint)" };
+const TAB_INFO = {
+  karkel:  { title:'Karakteristik Keluarga', sub:'Gambaran umum kondisi rumah tangga responden (bukan variabel iBangga).' },
+  karind:  { title:'Karakteristik Individu', sub:'Gambaran umum demografi anggota keluarga (bukan variabel iBangga).' },
+  datakel: { title:'Data Keluarga', sub:'Variabel iBangga: kondisi fisik rumah & akses layanan dasar.' },
+  dataind: { title:'Data Individu', sub:'Variabel iBangga: dokumen, kesehatan, dan kerentanan individu.' },
+  indeks:  { title:'Indeks iBangga', sub:'Pilih kecamatan untuk melihat rincian, atau lihat gabungan seluruh kecamatan.' }
+};
+
+let STATE = {
+  tab: 'indeks',
+  kecamatan: '',            // '' = semua kecamatan
+  daftarKecamatan: [],      // [{value,label}]
+  cache: {}                 // cache per "tab|kecamatan"
+};
+
+// ---------- helper: bungkus google.script.run jadi Promise ----------
+function gsRun(fnName, ...args) {
+  return new Promise((resolve, reject) => {
+    if (typeof google === 'undefined' || !google.script || !google.script.run) {
+      reject(new Error('Halaman ini perlu dibuka lewat URL Web App Apps Script agar bisa mengambil data (google.script.run tidak tersedia di pratinjau biasa).'));
+      return;
+    }
+    google.script.run
+      .withSuccessHandler(resolve)
+      .withFailureHandler((err) => reject(err))
+      [fnName](...args);
+  });
 }
 
-function fmt(n){ return n.toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-
-function aggregateAll(){
-  const totalKK = DATA.reduce((s,d)=>s+d.kk,0);
-  const wavg = (getter) => DATA.reduce((s,d)=>s+getter(d)*d.kk,0)/totalKK;
-  const v = {};
-  Object.values(VAR_GROUPS).forEach(g=>g.vars.forEach(({k})=>{ v[k] = wavg(d=>d.v[k]); }));
-  return { kec:"Seluruh kecamatan", kk:totalKK, ket:wavg(d=>d.ket), kem:wavg(d=>d.kem), keb:wavg(d=>d.keb), ibangga:wavg(d=>d.ibangga), v };
+function fmt(n) {
+  n = Number(n) || 0;
+  return n.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
+function fmtInt(n) { return (Number(n) || 0).toLocaleString('id-ID'); }
 
-const ALL = aggregateAll();
-let current = "__ALL__";
-
-function getRecord(){ return current==="__ALL__" ? ALL : DATA.find(d=>d.kec===current); }
-
-function renderNav(){
-  document.getElementById('nav').innerHTML = NAV_ITEMS.map(it=>`
-    <div class="nav-item ${it.active?'active':''} ${it.disabled?'disabled':''}" ${it.disabled?'title="Belum tersedia"':''}>
+// ============================================================
+// NAV & FILTER
+// ============================================================
+function renderNav() {
+  document.getElementById('nav').innerHTML = NAV_ITEMS.map(it => `
+    <div class="nav-item ${STATE.tab === it.id ? 'active' : ''} ${it.disabled ? 'disabled' : ''}"
+         data-tab="${it.id}" ${it.disabled ? 'title="Belum tersedia"' : ''}>
       <span class="ic">${it.ic}</span>${it.label}
     </div>`).join('');
+
+  document.querySelectorAll('.nav-item:not(.disabled)').forEach(el => {
+    el.onclick = () => { setTab(el.getAttribute('data-tab')); };
+  });
 }
 
-function renderSelect(){
-  const el = document.getElementById('kecSelect');
-  const items = [{k:"__ALL__", label:"Semua Kecamatan"}, ...DATA.map(d=>({k:d.kec, label:d.kec}))];
-  el.innerHTML = items.map(it=>`<option value="${it.k}" ${current===it.k?'selected':''}>${it.label}</option>`).join('');
-  el.onchange = (e)=>{ current = e.target.value; renderAll(); };
+async function initKecamatanFilter() {
+  const sel = document.getElementById('kecSelect');
+  try {
+    const res = await gsRun('ambilDaftarKecamatan');
+    if (res.status !== 'success') throw new Error(res.message || 'Gagal memuat daftar kecamatan.');
+    STATE.daftarKecamatan = res.daftar;
+    const opts = [{ value: '', label: 'Semua Kecamatan' }, ...res.daftar];
+    sel.innerHTML = opts.map(o => `<option value="${o.value}">${o.label}</option>`).join('');
+    sel.value = STATE.kecamatan;
+    sel.onchange = (e) => { STATE.kecamatan = e.target.value; renderTab(); };
+  } catch (err) {
+    sel.innerHTML = `<option value="">Semua Kecamatan</option>`;
+    console.error(err);
+  }
 }
 
-function renderTier(rec){
+function kecamatanLabel(kode) {
+  if (!kode) return 'Seluruh kecamatan';
+  const found = STATE.daftarKecamatan.find(k => k.value === kode);
+  return found ? found.label.replace(/^\d+\.\s*/, '') : kode;
+}
+
+function setTab(tabId) {
+  STATE.tab = tabId;
+  renderNav();
+  renderTab();
+}
+
+function renderTab() {
+  const info = TAB_INFO[STATE.tab];
+  document.getElementById('pageTitle').textContent = info.title;
+  document.getElementById('pageSub').textContent = info.sub;
+  document.getElementById('pageEyebrow').textContent = STATE.tab === 'indeks'
+    ? 'Rekap iBangga \u00b7 Kota Banjarmasin'
+    : 'Dashboard iBangga \u00b7 ' + kecamatanLabel(STATE.kecamatan);
+
+  const indeksView = document.getElementById('indeksView');
+  const genericView = document.getElementById('genericView');
+
+  if (STATE.tab === 'indeks') {
+    indeksView.style.display = '';
+    genericView.style.display = 'none';
+    loadIndeks();
+  } else {
+    indeksView.style.display = 'none';
+    genericView.style.display = '';
+    loadGenericTab();
+  }
+}
+
+// ============================================================
+// STATE BOX (loading / error / kosong) — dipakai di kedua tampilan
+// ============================================================
+function stateBoxHtml(msg, isError) {
+  return `<div class="state-box ${isError ? 'err' : ''}">${msg}</div>`;
+}
+
+// ============================================================
+// TAB "INDEKS IBANGGA" — dinamis dari sheet "Hitung iBangga per KK"
+// (fallback: ambilRataRataIndeksIBangga bila sheet ini tak ada)
+// ============================================================
+function pickField(row, candidates) {
+  const keys = Object.keys(row);
+  for (const c of candidates) {
+    const hit = keys.find(k => k.toLowerCase().replace(/[^a-z0-9]/g, '') === c.toLowerCase().replace(/[^a-z0-9]/g, ''));
+    if (hit !== undefined) return row[hit];
+  }
+  return undefined;
+}
+
+function normalisasiNamaKec(s) { return String(s || '').toLowerCase().replace(/[^a-z]/g, ''); }
+
+async function ambilDataIndeks() {
+  const cacheKey = 'indeks|__all__';
+  if (STATE.cache[cacheKey]) return STATE.cache[cacheKey];
+
+  let baris = [];
+  let sumberDinamis = true;
+  try {
+    // Sumber utama: agregasi server-side dari sheet "Hitung iBangga per KK"
+    // (lihat fungsi ambilRekapIndeksPerKK di Code.gs). Sudah dalam bentuk
+    // {kec, kk, ket, kem, keb, ibangga, v:{...}} — tidak perlu tebak nama kolom lagi.
+    const res = await gsRun('ambilRekapIndeksPerKK');
+    if (res.status === 'success' && res.daftar && res.daftar.length > 0) {
+      baris = res.daftar.map(row => ({
+        kec: row.kec, kk: Number(row.kk) || 0, ket: Number(row.ket) || 0, kem: Number(row.kem) || 0,
+        keb: Number(row.keb) || 0, ibangga: Number(row.ibangga) || 0, v: row.v || {}
+      }));
+    } else if (res.status === 'error') {
+      console.warn('ambilRekapIndeksPerKK: ' + res.message);
+    }
+  } catch (err) { console.error(err); }
+
+  if (baris.length === 0) {
+    // fallback: hitung langsung per kecamatan dari data mentah (tanpa skor kebahagiaan / rincian variabel)
+    sumberDinamis = false;
+    baris = [];
+    for (const k of STATE.daftarKecamatan) {
+      try {
+        const r = await gsRun('ambilRataRataIndeksIBangga', k.value);
+        if (r.status === 'success' && r.totalKK > 0) {
+          baris.push({
+            kec: k.label.replace(/^\d+\.\s*/, ''), kk: r.totalKK,
+            ket: Number(r.rataRata.ketentraman) || 0, kem: Number(r.rataRata.kemandirian) || 0,
+            keb: 0, ibangga: Number(r.rataRata.ibangga) || 0, v: {}
+          });
+        }
+      } catch (err) { console.error(err); }
+    }
+  }
+
+  const hasil = { baris: baris, sumberDinamis: sumberDinamis };
+  STATE.cache[cacheKey] = hasil;
+  return hasil;
+}
+
+function klasifikasiTingkat(skor) {
+  if (skor < 40) return { nama: 'Rentan', desc: 'Status pembangunan keluarga kurang baik &mdash; skor iBangga di bawah 40.', color: 'var(--tier-rentan)' };
+  if (skor <= 70) return { nama: 'Berkembang', desc: 'Status pembangunan keluarga cukup baik &mdash; skor iBangga antara 40 dan 70.', color: 'var(--tier-berkembang)' };
+  return { nama: 'Tangguh', desc: 'Status pembangunan keluarga baik &mdash; skor iBangga di atas 70.', color: 'var(--tier-tangguh)' };
+}
+
+function aggregateBaris(baris) {
+  const totalKK = baris.reduce((s, d) => s + d.kk, 0) || 1;
+  const wavg = (getter) => baris.reduce((s, d) => s + getter(d) * d.kk, 0) / totalKK;
+  const vKeys = new Set();
+  baris.forEach(d => Object.keys(d.v).forEach(k => vKeys.add(k)));
+  const v = {};
+  vKeys.forEach(k => { v[k] = wavg(d => Number(d.v[k]) || 0); });
+  return { kec: 'Seluruh kecamatan', kk: totalKK, ket: wavg(d => d.ket), kem: wavg(d => d.kem),
+    keb: wavg(d => d.keb), ibangga: wavg(d => d.ibangga), v: v };
+}
+
+async function loadIndeks() {
+  document.getElementById('sections').innerHTML = stateBoxHtml('Memuat data indeks&hellip;');
+  document.getElementById('tierBanner').innerHTML = '';
+  document.getElementById('statGrid').innerHTML = '';
+  document.getElementById('metaRow').innerHTML = '';
+
+  let data;
+  try {
+    data = await ambilDataIndeks();
+  } catch (err) {
+    document.getElementById('sections').innerHTML = stateBoxHtml('Gagal memuat data: ' + err.message, true);
+    return;
+  }
+  if (data.baris.length === 0) {
+    document.getElementById('sections').innerHTML = stateBoxHtml('Belum ada data untuk ditampilkan. Pastikan sheet "Hitung iBangga per KK" sudah terisi.');
+    return;
+  }
+
+  let rec;
+  if (!STATE.kecamatan) {
+    rec = aggregateBaris(data.baris);
+  } else {
+    const namaTarget = normalisasiNamaKec(kecamatanLabel(STATE.kecamatan));
+    rec = data.baris.find(d => normalisasiNamaKec(d.kec) === namaTarget || normalisasiNamaKec(d.kec).indexOf(namaTarget) !== -1);
+    if (!rec) rec = aggregateBaris(data.baris);
+  }
+
   const t = klasifikasiTingkat(rec.ibangga);
   document.getElementById('tierBanner').innerHTML = `
     <div class="tier-seal" style="color:${t.color}">
@@ -285,63 +500,246 @@ function renderTier(rec){
       <p class="tier-desc">${t.desc}</p>
     </div>
     <div class="tier-scale">
-      <div class="bar"><div class="marker" style="left:${Math.min(Math.max(rec.ibangga,0),100)}%"></div></div>
+      <div class="bar"><div class="marker" style="left:${Math.min(Math.max(rec.ibangga, 0), 100)}%"></div></div>
       <span class="caption">0 &middot; Rentan &lt;40 &middot; Berkembang 40&ndash;70 &middot; Tangguh &gt;70 &middot; 100</span>
-    </div>
-  `;
-}
+    </div>`;
 
-function renderStats(rec){
   const cards = [
-    {bar:"var(--ket-mid)", label:"Ketentraman", val:rec.ket},
-    {bar:"var(--kem-mid)", label:"Kemandirian", val:rec.kem},
-    {bar:"var(--keb-mid)", label:"Kebahagiaan", val:rec.keb},
-    {bar:"var(--ova-mid)", label:"iBangga (gabungan)", val:rec.ibangga},
+    { bar: 'var(--ket-mid)', label: 'Ketentraman', val: rec.ket },
+    { bar: 'var(--kem-mid)', label: 'Kemandirian', val: rec.kem },
+    { bar: 'var(--keb-mid)', label: 'Kebahagiaan', val: rec.keb },
+    { bar: 'var(--ova-mid)', label: 'iBangga (gabungan)', val: rec.ibangga }
   ];
-  document.getElementById('statGrid').innerHTML = cards.map(c=>`
+  document.getElementById('statGrid').innerHTML = cards.map(c => `
     <div class="stat-card" style="--bar:${c.bar}">
       <p class="stat-num">${fmt(c.val)}<span class="unit">/ 100</span></p>
       <p class="stat-label"><span class="dot"></span>${c.label}</p>
-      <div class="track"><div class="fill" style="width:${Math.min(c.val,100)}%"></div></div>
+      <div class="track"><div class="fill" style="width:${Math.min(Math.max(c.val, 0), 100)}%"></div></div>
     </div>`).join('');
-}
 
-function renderMeta(rec){
   document.getElementById('metaRow').innerHTML = `
     <span class="meta-item">Kecamatan &middot; <b>${rec.kec}</b></span>
-    <span class="meta-item">Jumlah KK terdata &middot; <b>${rec.kk.toLocaleString('id-ID')}</b></span>
-    <div class="data-note">Skor dihitung dari data KK yang sudah tercatat sejauh ini${current==="__ALL__" ? " &mdash; ini rata-rata tertimbang jumlah KK seluruh kecamatan" : ""}; akan diperbarui otomatis saat entri data bertambah.</div>
-  `;
+    <span class="meta-item">Jumlah KK terdata &middot; <b>${fmtInt(rec.kk)}</b></span>
+    <div class="data-note">${data.sumberDinamis
+      ? 'Skor dihitung dari sheet "Hitung iBangga per KK" (diperbarui otomatis saat data bertambah).'
+      : 'Sheet "Hitung iBangga per KK" belum ditemukan &mdash; skor Ketentraman/Kemandirian/iBangga dihitung langsung dari data mentah di "Edit Data Utama". Skor Kebahagiaan & rincian variabel belum tersedia tanpa sheet ini.'}</div>`;
+
+  const vKeys = Object.keys(rec.v);
+  if (vKeys.length > 0) {
+    document.getElementById('sections').innerHTML = `
+      <div class="section">
+        <div class="section-head"><h2>Rincian Variabel</h2></div>
+        <div class="var-grid">
+          ${vKeys.map(k => `<div class="var-card">
+              <p class="var-name">${k}</p>
+              <p class="var-num">${fmt(rec.v[k])}</p>
+              <div class="var-track"><div class="var-fill" style="width:${Math.min(Math.max(rec.v[k], 0), 100)}%;background:var(--ova-mid);"></div></div>
+            </div>`).join('')}
+        </div>
+      </div>`;
+  } else {
+    document.getElementById('sections').innerHTML = '';
+  }
 }
 
-function renderSections(rec){
-  document.getElementById('sections').innerHTML = Object.entries(VAR_GROUPS).map(([key,g])=>{
-    const cards = g.vars.map(({k,label})=>{
-      const val = rec.v[k];
-      return `<div class="var-card">
-          <p class="var-name">${label}</p>
-          <p class="var-num">${fmt(val)}</p>
-          <div class="var-track"><div class="var-fill ${g.cls}" style="width:${Math.min(val,100)}%"></div></div>
+// ============================================================
+// TAB GENERIK: Karakteristik Keluarga / Individu, Data Keluarga / Individu
+// Semua memakai bentuk respons "slide" yang sama dari Code.gs:
+// { status, totalDataMasuk, slide: [{field,judul,jenis,jumlahTerisi,kategori,anomaliValue,...}] }
+// ============================================================
+const TAB_BACKEND_FN = {
+  karkel: 'ambilKarakteristikKeluarga',
+  karind: 'ambilKarakteristikIndividu',
+  datakel: 'ambilHasilSementaraKeluarga',
+  dataind: 'ambilHasilSementaraIndividu'
+};
+
+// Sumber pencarian identitas anomali per tab (dipanggil saat kategori anomali diklik)
+async function ambilIdentitasAnomali(field, value) {
+  if (field === 'umur') return gsRun('ambilIdentitasAnomaliUmurMinus');
+  return gsRun('ambilIdentitasAnomaliKeluarga', field, value);
+}
+
+function warnaUntuk(idx) { return PALETTE[idx % PALETTE.length]; }
+
+function buatDonut(kategori) {
+  const total = kategori.reduce((s, k) => s + (k.jumlah || 0), 0) || 1;
+  let acc = 0;
+  const stops = kategori.map((k, i) => {
+    const start = (acc / total) * 100;
+    acc += k.jumlah || 0;
+    const end = (acc / total) * 100;
+    return `${warnaUntuk(i)} ${start}% ${end}%`;
+  }).join(', ');
+  return stops || 'var(--line) 0% 100%';
+}
+
+function renderSlideCard(slide, tabId) {
+  const kategori = slide.kategori || [];
+  const bodyId = 'slide_' + Math.random().toString(36).slice(2);
+
+  if (slide.jenis === 'bar_ordinal') {
+    const rows = kategori.map((k) => {
+      const isAnomali = slide.anomaliValue && k.value === slide.anomaliValue;
+      return `<div class="bar-row ${isAnomali ? 'anomali' : ''}" ${isAnomali ? `data-field="${slide.field}" data-value="${k.value}"` : ''}>
+          <div class="bar-top"><span>${k.label}${isAnomali ? ' &#9888;' : ''}</span><b>${fmtInt(k.jumlah)} &middot; ${fmt(k.persen)}%</b></div>
+          <div class="bar-track"><div class="bar-fill" style="width:${Math.min(k.persen, 100)}%"></div></div>
         </div>`;
     }).join('');
-    return `<div class="section">
-        <div class="section-head"><h2>${g.label}</h2><span class="section-score ${g.cls}">${fmt(rec[key])}</span></div>
-        <div class="var-grid">${cards}</div>
+    const rataRata = slide.rataRataAnggota !== undefined ? `Rata-rata: ${fmt(slide.rataRataAnggota)} orang/KK`
+      : slide.rataRataUmur !== undefined ? `Rata-rata umur: ${fmt(slide.rataRataUmur)} tahun` : '';
+    return `<div class="slide-card">
+        <div class="slide-head"><p class="slide-title">${slide.judul}</p><span class="slide-n">n=${fmtInt(slide.jumlahTerisi)}</span></div>
+        <div class="bar-list" id="${bodyId}">${rows}</div>
+        ${rataRata ? `<div class="avg-note">${rataRata}</div>` : ''}
+      </div>`;
+  }
+
+  // default: donut
+  let extraNote = '';
+  if (slide.rataRataPerKapita !== undefined) {
+    extraNote = `<div class="avg-note">Rata-rata luas lantai: ${fmt(slide.rataRataPerKapita)} m&sup2;/orang &middot; ambang layak huni: ${fmt(slide.ambangStandar)} m&sup2;/orang</div>`;
+  }
+  const legend = kategori.map((k, i) => {
+    const isAnomali = slide.anomaliValue && k.value === slide.anomaliValue;
+    return `<div class="legend-item ${isAnomali ? 'anomali' : ''}" ${isAnomali ? `data-field="${slide.field}" data-value="${k.value}"` : ''}>
+        <span class="dotc" style="background:${warnaUntuk(i)}"></span>
+        <span class="lbl">${k.label}${isAnomali ? ' &#9888;' : ''}</span>
+        <span class="pct">${fmt(k.persen)}%</span>
       </div>`;
   }).join('');
+  return `<div class="slide-card">
+      <div class="slide-head"><p class="slide-title">${slide.judul}</p><span class="slide-n">n=${fmtInt(slide.jumlahTerisi)}</span></div>
+      <div class="slide-body">
+        <div class="donut-ring" style="background:conic-gradient(${buatDonut(kategori)})">
+          <div class="donut-hole"><span class="n">${fmtInt(kategori.length)}</span><span class="lbl">kategori</span></div>
+        </div>
+        <div class="legend">${legend}</div>
+      </div>
+      ${extraNote}
+    </div>`;
 }
 
-function renderAll(){
-  const rec = getRecord();
-  renderSelect();
-  renderTier(rec);
-  renderStats(rec);
-  renderMeta(rec);
-  renderSections(rec);
+function pasangKlikAnomali(container) {
+  container.querySelectorAll('[data-field][data-value]').forEach(el => {
+    el.onclick = async () => {
+      const field = el.getAttribute('data-field');
+      const value = el.getAttribute('data-value');
+      openAnomaliModal(field, value);
+    };
+  });
 }
 
-renderNav();
-renderAll();
+async function loadGenericTab() {
+  const fn = TAB_BACKEND_FN[STATE.tab];
+  document.getElementById('summaryRow').innerHTML = '';
+  document.getElementById('rtTableWrap').innerHTML = '';
+  document.getElementById('slideGrid').innerHTML = stateBoxHtml('Memuat data&hellip;');
+
+  const cacheKey = STATE.tab + '|' + STATE.kecamatan;
+  let res;
+  try {
+    if (STATE.cache[cacheKey]) {
+      res = STATE.cache[cacheKey];
+    } else {
+      res = await gsRun(fn, STATE.kecamatan || null, null);
+      STATE.cache[cacheKey] = res;
+    }
+  } catch (err) {
+    document.getElementById('slideGrid').innerHTML = stateBoxHtml('Gagal memuat data: ' + (err.message || err), true);
+    return;
+  }
+
+  if (res.status !== 'success') {
+    document.getElementById('slideGrid').innerHTML = stateBoxHtml(res.message || 'Terjadi kesalahan.', true);
+    return;
+  }
+  if (!res.totalDataMasuk) {
+    document.getElementById('slideGrid').innerHTML = stateBoxHtml('Belum ada data untuk kecamatan ini.');
+    return;
+  }
+
+  const chips = [`<div class="chip">Data terisi &middot; <b>${fmtInt(res.totalDataMasuk)}</b></div>`];
+  if (res.totalKeluargaMasuk !== undefined) chips.push(`<div class="chip">Jumlah KK &middot; <b>${fmtInt(res.totalKeluargaMasuk)}</b></div>`);
+  document.getElementById('summaryRow').innerHTML = chips.join('');
+
+  document.getElementById('slideGrid').innerHTML = (res.slide || []).map(s => renderSlideCard(s, STATE.tab)).join('');
+  pasangKlikAnomali(document.getElementById('slideGrid'));
+
+  // tabel tambahan khusus per tab
+  if (STATE.tab === 'karind') {
+    loadTabelSampelRT();
+  } else if (STATE.tab === 'karkel') {
+    loadDaftarNamaRT();
+  }
+}
+
+async function loadTabelSampelRT() {
+  const wrap = document.getElementById('rtTableWrap');
+  try {
+    const res = await gsRun('ambilTabelSampelRT', STATE.kecamatan || null);
+    if (res.status !== 'success' || !res.baris || res.baris.length === 0) return;
+    const rtCols = res.daftarRT;
+    wrap.innerHTML = `<div class="rt-table-wrap"><table class="rt-table">
+        <thead><tr><th>Kelurahan</th>${rtCols.map(rt => `<th>RT ${rt}</th>`).join('')}<th>Total</th></tr></thead>
+        <tbody>${res.baris.map(b => `<tr><td>${b.kelurahan}</td>${rtCols.map(rt => `<td>${fmtInt(b[rt] || 0)}</td>`).join('')}<td class="total">${fmtInt(b._total)}</td></tr>`).join('')}</tbody>
+      </table></div>`;
+  } catch (err) { console.error(err); }
+}
+
+async function loadDaftarNamaRT() {
+  const wrap = document.getElementById('rtTableWrap');
+  try {
+    const res = await gsRun('ambilDaftarNamaRTKolomO', STATE.kecamatan || null);
+    if (res.status !== 'success' || !res.daftarNama || res.daftarNama.length === 0) return;
+    wrap.innerHTML = `<div class="summary-row" style="margin-bottom:18px;">
+        <div class="chip" style="flex-basis:100%">Daftar ${res.namaHeader || 'RT'} &middot; ${res.daftarNama.map(n => `<b>${n}</b>`).join(', ')}</div>
+      </div>`;
+  } catch (err) { console.error(err); }
+}
+
+// ============================================================
+// MODAL IDENTITAS ANOMALI
+// ============================================================
+function openAnomaliModal(field, value) {
+  const overlay = document.getElementById('anomaliModal');
+  document.getElementById('anomaliModalTitle').textContent = 'Rincian Data Anomali';
+  document.getElementById('anomaliModalSub').textContent = 'Memuat&hellip;';
+  document.getElementById('anomaliModalBody').innerHTML = '';
+  overlay.classList.add('open');
+
+  ambilIdentitasAnomali(field, value).then(res => {
+    if (res.status !== 'success') {
+      document.getElementById('anomaliModalSub').textContent = res.message || 'Gagal memuat data.';
+      return;
+    }
+    document.getElementById('anomaliModalSub').textContent = `${fmtInt(res.jumlah)} data ditemukan.`;
+    if (!res.daftar || res.daftar.length === 0) {
+      document.getElementById('anomaliModalBody').innerHTML = stateBoxHtml('Tidak ada data.');
+      return;
+    }
+    const kolom = Object.keys(res.daftar[0]);
+    document.getElementById('anomaliModalBody').innerHTML = `<table class="modal-table">
+        <thead><tr>${kolom.map(k => `<th>${k.replace(/_/g, ' ')}</th>`).join('')}</tr></thead>
+        <tbody>${res.daftar.map(row => `<tr>${kolom.map(k => `<td>${row[k]}</td>`).join('')}</tr>`).join('')}</tbody>
+      </table>`;
+  }).catch(err => {
+    document.getElementById('anomaliModalSub').textContent = 'Gagal memuat data: ' + (err.message || err);
+  });
+}
+
+document.getElementById('anomaliModalClose').onclick = () => document.getElementById('anomaliModal').classList.remove('open');
+document.getElementById('anomaliModal').onclick = (e) => { if (e.target.id === 'anomaliModal') e.currentTarget.classList.remove('open'); };
+
+// ============================================================
+// INIT
+// ============================================================
+(async function init() {
+  renderNav();
+  await initKecamatanFilter();
+  renderTab();
+})();
+
 </script>
 </body>
 </html>
